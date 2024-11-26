@@ -182,7 +182,7 @@ CORS is allowed on this server, so you can also use VS Code's built-in OpenAPI E
 Run at project root:
 
 ```sh
-go run ./...
+go test ./...
 ```
 
 ## About the Project
