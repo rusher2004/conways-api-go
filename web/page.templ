@@ -1,0 +1,51 @@
+package web
+
+import "fmt"
+
+css boardGrid(x int, y int) {
+	display: grid;
+	grid-auto-flow: column;
+	grid-template-columns: { templ.SafeCSSProperty(fmt.Sprintf("repeat(%d, 40px)", x)) };
+	grid-template-rows: { templ.SafeCSSProperty(fmt.Sprintf("repeat(%d, 40px)", y)) };
+}
+
+css boardCell() {
+	width: 40px;
+	height: 40px;
+	border: 1px solid grey;
+}
+
+css footer(width int) {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: { templ.SafeCSSProperty(fmt.Sprintf("%dpx", width * 40)) };
+}
+
+templ BoardView(id int, board [][]bool, generation int, final bool) {
+	<html>
+		<head>
+			<title>Board</title>
+		</head>
+		<body>
+			<h1>Board { fmt.Sprintf("%d", id) }</h1>
+			<div class={ boardGrid(len(board), len(board[0])) }>
+				for _, row := range board {
+					for _, cell := range row {
+						if cell {
+							<div class={ boardCell() } style="background-color: black;"></div>
+						} else {
+							<div class={ boardCell() } style="background-color: white;"></div>
+						}
+					}
+				}
+			</div>
+			<div class={ footer(len(board)) }>
+				<p>Generation: { fmt.Sprintf("%d", generation) }</p>
+				<a href={ templ.URL(fmt.Sprintf("/board/%d?state=1", id)) }>
+					<button disabled?={ final }>Next</button>
+				</a>
+			</div>
+		</body>
+	</html>
+}

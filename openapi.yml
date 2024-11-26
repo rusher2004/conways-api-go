@@ -1,0 +1,108 @@
+openapi: 3.0.3
+info:
+  title: Conways Game of Life
+  version: 0.1.0
+
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /board:
+    post:
+      summary: Create a new board
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cells:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      type: boolean
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+  /board/{board_id}:
+    get:
+      summary: Get the board state
+      parameters:
+        - name: board_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: state
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+          description: Number of generations to calculate
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  cells:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        type: boolean
+                  generation:
+                    type: integer
+                  final:
+                    type: boolean
+  /board/{board_id}/final:
+    get:
+      summary: Get the board's final state
+      parameters:
+        - name: board_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: state
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+          description: Maximum number of generations to calculate
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  cells:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        type: boolean
+                  generation:
+                    type: integer
+                  final:
+                    type: boolean
